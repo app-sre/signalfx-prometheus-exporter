@@ -8,7 +8,7 @@ Generic placeholders are defined as follows:
 * `<prometheus-label>`: a string following the prometheus label regex `[a-zA-Z_][a-zA-Z0-9_]*`
 * `<go-template>`: a string that contains a go-template
 
-The variables usable in go templates are described [here](signalflow-metadata.md).
+The variables usable in go templates are described in the [SignalFlow primer](signalflow.md).
 
 ### Schema
 ```yml
