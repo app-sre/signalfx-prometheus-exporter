@@ -11,6 +11,7 @@ func TestExampleSingleMetric(t *testing.T) {
 	c, err := config.LoadConfig("../examples/1_single_metric.yml")
 	assert.Nil(t, err)
 	assert.Equal(t, "xxx", c.Sfx.Token)
+	assert.Equal(t, "us1", c.Sfx.Realm)
 	assert.Equal(t, 1, len(c.Flows))
 
 	_, err = c.Flows[0].GetMetricTemplateForStream("foo")
