@@ -2,6 +2,7 @@ package serve
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -47,7 +48,6 @@ func CollectoAndServe(configFile string, listenPort int, observabilityPort int, 
 				err = errors.New("unknown reason")
 			}
 			log.Fatalf("Flow %s failed because of %+s", fp.Name, err)
-			}
 			return err
 		})
 	}
