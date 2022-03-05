@@ -43,8 +43,10 @@ func CollectoAndServe(configFile string, listenPort int, observabilityPort int, 
 		fp := cfg.Flows[i]
 		errs.Go(func() error {
 			err := streamData(cfg.Sfx, fp)
-			if err != nil {
-				log.Fatalf("Flow %s failed because of %+s", fp.Name, err)
+			if err == nil {
+				err = errors.New("unknown reason")
+			}
+			log.Fatalf("Flow %s failed because of %+s", fp.Name, err)
 			}
 			return err
 		})
@@ -184,6 +186,7 @@ func streamData(sfx config.SignalFxConfig, fp config.FlowProgram) error {
 		}
 	}
 	err = comp.Err()
+	client.Close()
 	return err
 }
 
