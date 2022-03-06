@@ -10,6 +10,16 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+type GroupReadyConditions struct {
+	MaxAge     string `yaml:"maxAge"`
+	MinMetrics int    `yaml:"minMetrics"`
+}
+
+type GroupingConfig struct {
+	Label           string
+	ReadyConditions GroupReadyConditions `yaml:"groupReadyConditions"`
+}
+
 type PrometheusMetric struct {
 	Name           string            `yaml:"name"`
 	Stream         string            `yaml:"stream"`
@@ -115,8 +125,9 @@ func (sfx *SignalFxConfig) Validate() error {
 }
 
 type Config struct {
-	Sfx   SignalFxConfig `yaml:"sfx"`
-	Flows []FlowProgram  `yaml:"flows"`
+	Sfx      SignalFxConfig   `yaml:"sfx"`
+	Flows    []FlowProgram    `yaml:"flows"`
+	Grouping []GroupingConfig `yaml:"grouping"`
 }
 
 func (c *Config) Validate() error {
