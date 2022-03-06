@@ -11,8 +11,7 @@ import (
 )
 
 type GroupReadyConditions struct {
-	MaxAge     string `yaml:"maxAge"`
-	MinMetrics int    `yaml:"minMetrics"`
+	MinMetrics int `yaml:"minMetrics"`
 }
 
 type GroupingConfig struct {
