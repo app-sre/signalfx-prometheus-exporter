@@ -44,9 +44,6 @@ func CollectoAndServe(configFile string, listenPort int, observabilityPort int, 
 		fp := cfg.Flows[i]
 		errs.Go(func() error {
 			err := streamData(cfg.Sfx, fp)
-			if err == nil {
-				err = errors.New("unknown reason")
-			}
 			log.Printf("Flow %s failed because of %+s\n", fp.Name, err)
 			return err
 		})
@@ -185,7 +182,14 @@ func streamData(sfx config.SignalFxConfig, fp config.FlowProgram) error {
 			}
 		}
 	}
+
+	/* signalflow programs without stop timestamp should run forever. if the
+	above loop exists, it implies that the program exited. if comp.Err() is
+	not set, we have to assume an unknown error */
 	err = comp.Err()
+	if err == nil {
+		err = errors.New("flow failed for unknown an unknown")
+	}
 	client.Close()
 	return err
 }
