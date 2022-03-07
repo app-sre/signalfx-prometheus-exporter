@@ -10,7 +10,7 @@ import (
 
 type FilteringRegistry struct {
 	Registry    prometheus.Gatherer
-	Grouping    config.GroupingConfig
+	Grouping    config.Grouping
 	FilterValue string
 }
 
@@ -43,9 +43,9 @@ func (fr *FilteringRegistry) Gather() ([]*dto.MetricFamily, error) {
 		}
 	}
 
-	if metricCount >= fr.Grouping.ReadyConditions.MinMetrics {
+	if metricCount >= fr.Grouping.GroupReadyCondition.MinMetrics {
 		return filteredMfs, nil
 	} else {
-		return nil, fmt.Errorf("Not enough metrics in group. minMetrics = %d", fr.Grouping.ReadyConditions.MinMetrics)
+		return nil, fmt.Errorf("Not enough metrics in group. minMetrics = %d", fr.Grouping.GroupReadyCondition.MinMetrics)
 	}
 }

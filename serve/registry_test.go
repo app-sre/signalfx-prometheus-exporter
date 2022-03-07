@@ -17,9 +17,9 @@ var (
 func setupRegistry(minMetrics int) (*serve.FilteringRegistry, *prometheus.Registry) {
 	registry := prometheus.NewRegistry()
 
-	grouping := config.GroupingConfig{
+	grouping := config.Grouping{
 		Label: FilterLabel,
-		ReadyConditions: config.GroupReadyConditions{
+		GroupReadyCondition: config.GroupReadyCondition{
 			MinMetrics: minMetrics,
 		},
 	}

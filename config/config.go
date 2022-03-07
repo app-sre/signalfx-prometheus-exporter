@@ -10,13 +10,13 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type GroupReadyConditions struct {
+type GroupReadyCondition struct {
 	MinMetrics int `yaml:"minMetrics"`
 }
 
-type GroupingConfig struct {
-	Label           string
-	ReadyConditions GroupReadyConditions `yaml:"groupReadyConditions"`
+type Grouping struct {
+	Label               string
+	GroupReadyCondition GroupReadyCondition `yaml:"groupReadyCondition"`
 }
 
 type PrometheusMetric struct {
@@ -111,12 +111,12 @@ func (fp *FlowProgram) Validate() error {
 	return nil
 }
 
-type SignalFxConfig struct {
+type Sfx struct {
 	Realm string `yaml:"realm"`
 	Token string `yaml:"token"`
 }
 
-func (sfx *SignalFxConfig) Validate() error {
+func (sfx *Sfx) Validate() error {
 	if sfx.Realm == "" {
 		sfx.Realm = "us1"
 	}
@@ -124,9 +124,9 @@ func (sfx *SignalFxConfig) Validate() error {
 }
 
 type Config struct {
-	Sfx      SignalFxConfig   `yaml:"sfx"`
-	Flows    []FlowProgram    `yaml:"flows"`
-	Grouping []GroupingConfig `yaml:"grouping"`
+	Sfx       Sfx           `yaml:"sfx"`
+	Flows     []FlowProgram `yaml:"flows"`
+	Groupings []Grouping    `yaml:"grouping"`
 }
 
 func (c *Config) Validate() error {

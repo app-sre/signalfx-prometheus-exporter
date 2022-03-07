@@ -82,7 +82,7 @@ func CollectoAndServe(configFile string, listenPort int, observabilityPort int, 
 	mux.HandleFunc("/ready", readinessHandler)
 	mux.HandleFunc("/healthy", livenessHandler)
 	mux.HandleFunc("/metrics", metricsHandler)
-	for _, g := range cfg.Grouping {
+	for _, g := range cfg.Groupings {
 		mux.HandleFunc(fmt.Sprintf("/metrics/%s", g.Label), func(rw http.ResponseWriter, r *http.Request) {
 			probeHandler(g, rw, r)
 		})
@@ -117,7 +117,7 @@ func livenessHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func probeHandler(grouping config.GroupingConfig, w http.ResponseWriter, r *http.Request) {
+func probeHandler(grouping config.Grouping, w http.ResponseWriter, r *http.Request) {
 	// blackbox exporter compatible scrape handler
 	ctx, cancel := context.WithTimeout(r.Context(), time.Duration(5*float64(time.Second)))
 	defer cancel()
@@ -147,7 +147,7 @@ func metricsHandler(w http.ResponseWriter, r *http.Request) {
 	h.ServeHTTP(w, r)
 }
 
-func streamData(sfx config.SignalFxConfig, fp config.FlowProgram) error {
+func streamData(sfx config.Sfx, fp config.FlowProgram) error {
 	// initialize flow metrics
 	for _, mt := range fp.MetricTemplates {
 		flowMetricsReceived.WithLabelValues(fp.Name, mt.Stream)

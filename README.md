@@ -90,7 +90,7 @@ will fail when less than 2 metrics are left after filtering.
 ```yaml
 grouping:
 - label: instance
-  groupReadyConditions:
+  groupReadyCondition:
     minMetrics: 2
 ```
 

@@ -11,5 +11,5 @@ flows:
       instance: '{{ .SignalFxLabels.cp_testname }}'
 grouping:
 - label: instance
-  groupReadyConditions:
+  groupReadyCondition:
     minMetrics: 2
