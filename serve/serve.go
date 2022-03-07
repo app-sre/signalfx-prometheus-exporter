@@ -188,7 +188,7 @@ func streamData(sfx config.SignalFxConfig, fp config.FlowProgram) error {
 	not set, we have to assume an unknown error */
 	err = comp.Err()
 	if err == nil {
-		err = errors.New("flow failed for unknown an unknown")
+		err = errors.New("flow failed for an unknown reason")
 	}
 	client.Close()
 	return err
