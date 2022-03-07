@@ -64,16 +64,7 @@ Since the data delivery mechanism from SignalFX is a stream of metrics, the proc
 Metrics can also be scraped based on a metric label. This can be enabled by providing
 grouping [configuration](docs/configuration.md).
 
-```yaml
-grouping:
-- label: instance
-  groupReadyConditions:
-    minMetrics: 2
-```
-
-This example enables filtering based on the `instance` label of metrics. A filtered
-scrape on this label can be done via the `:9091/metrics/instance?target=value` endpoint,
-where the `target` query parameter supplies the value to filter on.
+Once configured, the endpoint for a group scrape looks like `:9091/probe/$label?target=$value` and returns only metrics with the `$label` set to `$value`.
 
 The async metric delivery mode of SignalFX makes it necessary to handle situations
 where metrics are yet missing (e.g. cold cache on process startup). The
@@ -88,6 +79,20 @@ when less than `minMetrics` metrics would be exposed.
 The `target` parameter to supply a filter for the label makes this scrape
 endpoint compatible with the [`Probe`](https://prometheus-operator.dev/docs/operator/design/#probe)
 CRD from the Prometheus operator.
+
+### Example
+
+The following example enables filtering based on the `instance` label of metrics. A filtered
+scrape on this label can be done via the `:9091/metrics/instance?target=value` endpoint,
+where the `target` query parameter supplies the value to filter on. Additionally, the scrape
+will fail when less than 2 metrics are left after filtering.
+
+```yaml
+grouping:
+- label: instance
+  groupReadyConditions:
+    minMetrics: 2
+```
 
 
 ## Observability
