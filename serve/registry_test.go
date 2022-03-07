@@ -14,7 +14,7 @@ var (
 	FilterValue = "value"
 )
 
-func setupRegistry(minMetrics int) (*serve.FilteringRegistry, *prometheus.Registry) {
+func setupRegistry(minMetrics uint) (*serve.FilteringRegistry, *prometheus.Registry) {
 	registry := prometheus.NewRegistry()
 
 	grouping := config.Grouping{
@@ -37,7 +37,7 @@ func TestMinimumMetricsSupplied(t *testing.T) {
 	/* test that the filtering registry is not complaining
 	   when the minimum required metrics remain after filtering */
 
-	minMetrics := 2
+	var minMetrics uint = 2
 	fr, registry := setupRegistry(minMetrics)
 
 	gaugeWithMatchingLabel := prometheus.NewGaugeVec(
@@ -59,9 +59,9 @@ func TestMinimumMetricsSupplied(t *testing.T) {
 	assert.NotNil(t, metricFamilies)
 	assert.NotEmpty(t, metricFamilies)
 
-	metricCounter := 0
+	var metricCounter uint = 0
 	for _, mf := range metricFamilies {
-		metricCounter += len(mf.Metric)
+		metricCounter += uint(len(mf.Metric))
 	}
 	assert.GreaterOrEqual(t, metricCounter, minMetrics)
 }
@@ -70,7 +70,7 @@ func TestTooFewSupplied(t *testing.T) {
 	/* test that the filtering registry raises and error
 	   when less metrics remain as demanded after filtering */
 
-	minMetrics := 2
+	var minMetrics uint = 2
 	fr, registry := setupRegistry(minMetrics)
 
 	gaugeWithMatchingLabel := prometheus.NewGaugeVec(

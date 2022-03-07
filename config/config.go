@@ -11,7 +11,7 @@ import (
 )
 
 type GroupReadyCondition struct {
-	MinMetrics int `yaml:"minMetrics"`
+	MinMetrics uint `yaml:"minMetrics"`
 }
 
 type Grouping struct {
@@ -142,20 +142,23 @@ func (c *Config) Validate() error {
 	return nil
 }
 
-func LoadConfig(file string) (*Config, error) {
-	yamlFile, err := ioutil.ReadFile(file)
-	if err != nil {
-		log.Printf("yamlFile.Get err   #%v ", err)
-		return nil, err
-	}
-
+func LoadConfigFromBytes(configBytes []byte) (*Config, error) {
 	var cfg Config
-	err = yaml.Unmarshal(yamlFile, &cfg)
+	err := yaml.Unmarshal(configBytes, &cfg)
 	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
+		log.Printf("Unmarshal: %v\n", err)
 		return nil, err
 	}
 
 	cfg.Validate()
 	return &cfg, nil
+}
+
+func LoadConfig(file string) (*Config, error) {
+	configBytes, err := ioutil.ReadFile(file)
+	if err != nil {
+		log.Printf("yamlFile.Get err   #%v ", err)
+		return nil, err
+	}
+	return LoadConfigFromBytes(configBytes)
 }

@@ -15,7 +15,7 @@ type FilteringRegistry struct {
 }
 
 func (fr *FilteringRegistry) Gather() ([]*dto.MetricFamily, error) {
-	metricCount := 0
+	var metricCount uint = 0
 	mfs, err := fr.Registry.Gather()
 	if err != nil {
 		return nil, err
