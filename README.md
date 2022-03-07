@@ -61,7 +61,7 @@ Since the data delivery mechanism from SignalFX is a stream of metrics, the proc
 
 ## Scraping metric groups
 
-Metrics can also be scraped based on a metric labels. This can be enabled by providing
+Metrics can also be scraped based on a metric label. This can be enabled by providing
 grouping [configuration](docs/configuration.md).
 
 ```yaml
@@ -73,7 +73,7 @@ grouping:
 
 This example enables filtering based on the `instance` label of metrics. A filtered
 scrape on this label can be done via the `:9091/metrics/instance?target=value` endpoint,
-where the `target` query paremter supplies the value to filter on.
+where the `target` query parameter supplies the value to filter on.
 
 The async metric delivery mode of SignalFX makes it necessary to handle situations
 where metrics are yet missing (e.g. cold cache on process startup). The
