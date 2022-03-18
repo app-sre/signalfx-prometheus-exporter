@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi8/go-toolset:1.16.12 as builder
+FROM quay.io/app-sre/golang:1.17.8 as builder
 COPY . .
 RUN make gobuild
 
