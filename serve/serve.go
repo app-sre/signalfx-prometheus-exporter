@@ -91,7 +91,7 @@ func serve(cfg *config.Config, listenPort int, ctx context.Context) {
 			Log().Fatalf("metrics server failure: %+s", err)
 		}
 	}()
-	Log().Info("Scrape server listening on port %v", listenPort)
+	Log().Infof("Scrape server listening on port %v", listenPort)
 
 	<-ctx.Done()
 
