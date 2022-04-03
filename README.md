@@ -108,3 +108,4 @@ An article that goes into details about the exposed go runtime metrics can be fo
 
 ## Known issues
 - verify query - publish() must exists at least once
+- when counter metrics are used, running multiple replicas of the exporter might yield wrong results for those counters, resulting in arbitrary wrongly detected counter resets when writing PromQL queries with `rate`
