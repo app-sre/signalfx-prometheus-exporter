@@ -18,7 +18,7 @@ gobuild: gotest
 	CGO_ENABLED=0 GOOS=$(shell go env GOOS) go build -o signalfx-prometheus-exporter -a -installsuffix cgo main.go
 
 build:
-	@DOCKER_BUILDKIT=1 $(CONTAINER_ENGINE) build --no-cache -t $(IMAGE_NAME):latest . --progress=plain
+	@DOCKER_BUILDKIT=1 $(CONTAINER_ENGINE) --config=$(DOCKER_CONF) build --no-cache -t $(IMAGE_NAME):latest . --progress=plain
 	@$(CONTAINER_ENGINE) tag $(IMAGE_NAME):latest $(IMAGE_NAME):$(IMAGE_TAG)
 
 push:
