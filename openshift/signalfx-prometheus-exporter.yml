@@ -11,6 +11,8 @@ objects:
   kind: Deployment
   metadata:
     name: signalfx-prometheus-exporter
+    annotations:
+      ignore-check.kube-linter.io/minimum-three-replicas: "running multiple replicas might yield wrong results for counters metrics" # https://github.com/app-sre/signalfx-prometheus-exporter/blob/main/README.md#known-issues
     labels:
       app: signalfx-prometheus-exporter
   spec:
