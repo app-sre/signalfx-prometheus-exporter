@@ -13,6 +13,7 @@ objects:
     name: signalfx-prometheus-exporter
     annotations:
       ignore-check.kube-linter.io/minimum-three-replicas: "running multiple replicas might yield wrong results for counters metrics" # https://github.com/app-sre/signalfx-prometheus-exporter/blob/main/README.md#known-issues
+      ignore-check.kube-linter.io/unset-cpu-requirements: "no cpu limits"
     labels:
       app: signalfx-prometheus-exporter
   spec:
@@ -62,7 +63,6 @@ objects:
           resources:
             limits:
               memory: ${MEMORY_LIMIT}
-              cpu: ${CPU_LIMIT}
             requests:
               memory: ${MEMORY_REQUESTS}
               cpu: ${CPU_REQUESTS}
@@ -116,9 +116,7 @@ parameters:
 - name: REPLICAS
   value: "1"
 - name: CPU_REQUESTS
-  value: 25m
-- name: CPU_LIMIT
-  value: 100m
+  value: 10m
 - name: MEMORY_REQUESTS
   value: 200Mi
 - name: MEMORY_LIMIT
