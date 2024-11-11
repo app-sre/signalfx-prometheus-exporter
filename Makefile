@@ -24,3 +24,7 @@ build:
 push:
 	@$(CONTAINER_ENGINE) --config=$(DOCKER_CONF) push $(IMAGE_NAME):latest
 	@$(CONTAINER_ENGINE) --config=$(DOCKER_CONF) push $(IMAGE_NAME):$(IMAGE_TAG)
+
+.PHONY: container-test
+container-test:
+	$(CONTAINER_ENGINE) build --target test -t $(IMAGE_NAME):pr-$(IMAGE_TAG) -f Dockerfile .
