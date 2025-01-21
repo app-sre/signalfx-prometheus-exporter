@@ -1,6 +1,6 @@
 module signalfx-prometheus-exporter
 
-go 1.21
+go 1.22
 
 // Could not get past signalfx-go 1.30.0 without major changes
 require (
