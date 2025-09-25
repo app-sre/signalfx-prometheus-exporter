@@ -26,3 +26,6 @@ tools/bin
 /kubeconfig
 .dockerignore
 .docker
+
+# binary from builds
+signalfx-prometheus-exporter
