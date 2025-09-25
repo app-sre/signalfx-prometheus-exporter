@@ -14,8 +14,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/signalfx/signalfx-go/signalflow"
-	"github.com/signalfx/signalfx-go/signalflow/messages"
+	"github.com/signalfx/signalflow-client-go/v2/signalflow"
+	"github.com/signalfx/signalflow-client-go/v2/signalflow/messages"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -172,7 +172,7 @@ func streamData(sfx config.Sfx, fp config.FlowProgram) error {
 		return fmt.Errorf("Error connecting to SignalFX realm %s - %+s", sfx.Realm, err)
 	}
 
-	comp, err := client.Execute(&signalflow.ExecuteRequest{
+	comp, err := client.Execute(context.Background(), &signalflow.ExecuteRequest{
 		Program: fp.Query,
 		Start:   time.Now().Add(fp.HistoricalData * -1),
 	})
@@ -185,7 +185,11 @@ func streamData(sfx config.Sfx, fp config.FlowProgram) error {
 			continue
 		}
 		for _, pl := range msg.Payloads {
-			meta := comp.TSIDMetadata(pl.TSID)
+			meta, err := comp.TSIDMetadata(context.Background(), pl.TSID)
+			if err != nil {
+				flowMetricsFailed.WithLabelValues(fp.Name, "unknown").Inc()
+				continue
+			}
 			stream, ok := meta.InternalProperties["sf_streamLabel"].(string)
 			if !ok {
 				stream = "default"
