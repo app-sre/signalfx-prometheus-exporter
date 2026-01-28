@@ -9,6 +9,7 @@ This is a Go-based Prometheus exporter that bridges the gap between SignalFX (Sp
   - gorilla/mux (HTTP routing)
   - prometheus/client_golang (Prometheus metrics)
   - signalfx/signalfx-go (SignalFX integration)
+  - signalfx/signalflow-client-go/v2 (SignalFlow streaming)
   - spf13/cobra (CLI framework)
   - go.uber.org/zap (logging)
   - gopkg.in/yaml.v3 (configuration)
