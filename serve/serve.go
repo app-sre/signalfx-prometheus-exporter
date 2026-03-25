@@ -172,6 +172,9 @@ func streamData(sfx config.Sfx, fp config.FlowProgram) error {
 	client, err := signalflow.NewClient(
 		signalflow.StreamURLForRealm(sfx.Realm),
 		signalflow.AccessToken(sfx.Token),
+		signalflow.OnError(func(connErr error) {
+			Log().Errorf("Flow %s websocket error: %+s", fp.Name, connErr)
+		}),
 	)
 	if err != nil {
 		return fmt.Errorf("Error connecting to SignalFX realm %s - %+s", sfx.Realm, err)
