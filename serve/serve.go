@@ -67,7 +67,12 @@ func setupMetricStreaming(cfg *config.Config, ctx context.Context) context.Conte
 		fp := cfg.Flows[i]
 		errs.Go(func() error {
 			err := streamData(cfg.Sfx, fp)
-			Log().Errorf("Flow %s failed because of %+s", fp.Name, err)
+			var compErr *signalflow.ComputationError
+			if errors.As(err, &compErr) {
+				Log().Errorf("Flow %s failed: code=%d type=%s message=%s", fp.Name, compErr.Code, compErr.ErrorType, compErr.Message)
+			} else {
+				Log().Errorf("Flow %s failed because of %+s", fp.Name, err)
+			}
 			return err
 		})
 	}
@@ -179,6 +184,12 @@ func streamData(sfx config.Sfx, fp config.FlowProgram) error {
 	if err != nil {
 		return fmt.Errorf("SignalFlow program for %s is invalid - %+s", fp.Name, err)
 	}
+
+	go func() {
+		for msg := range comp.Info() {
+			Log().Infof("Flow %s info: code=%s level=%s contents=%v", fp.Name, msg.MessageBlock.Code, msg.MessageBlock.Level, msg.MessageBlock.ContentsRaw)
+		}
+	}()
 
 	for msg := range comp.Data() {
 		if len(msg.Payloads) == 0 {
