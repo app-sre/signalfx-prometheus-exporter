@@ -66,9 +66,30 @@ func setupMetricStreaming(cfg *config.Config, ctx context.Context) context.Conte
 	for i := range cfg.Flows {
 		fp := cfg.Flows[i]
 		errs.Go(func() error {
-			err := streamData(cfg.Sfx, fp)
-			Log().Errorf("Flow %s failed because of %+s", fp.Name, err)
-			return err
+			backoff := time.Second
+			maxBackoff := 5 * time.Minute
+			for {
+				err := streamData(cfg.Sfx, fp)
+				Log().Errorf("Flow %s failed because of %+s", fp.Name, err)
+
+				select {
+				case <-ctx.Done():
+					return ctx.Err()
+				default:
+				}
+
+				Log().Infof("Flow %s will retry in %v", fp.Name, backoff)
+				select {
+				case <-time.After(backoff):
+				case <-ctx.Done():
+					return ctx.Err()
+				}
+
+				backoff *= 2
+				if backoff > maxBackoff {
+					backoff = maxBackoff
+				}
+			}
 		})
 	}
 	return ctx
