@@ -8,7 +8,7 @@ RUN make gobuild
 FROM builder as test
 RUN make gotest
 
-FROM registry.access.redhat.com/ubi9-minimal@sha256:1bc3c5c15720506a0cf48adfdf8b623dfe704377e007d7bbae8d14876392ca6a
+FROM registry.access.redhat.com/ubi9-minimal@sha256:850143255ee0d1915f09aaa09f6ed31f24086ba605c323badfbefa95b8c52b0e
 RUN microdnf update -y && microdnf install -y ca-certificates && rm -rf /var/cache/yum
 COPY --from=builder /build/signalfx-prometheus-exporter /
 ENTRYPOINT ["/signalfx-prometheus-exporter"]
