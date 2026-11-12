@@ -2,7 +2,7 @@ module signalfx-prometheus-exporter
 
 go 1.24.0
 
-toolchain go1.24.6
+toolchain go1.26.11
 
 require (
 	github.com/gorilla/mux v1.8.1
